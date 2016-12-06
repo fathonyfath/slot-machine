@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="id.fathonyteguh.slotmachine.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/slotContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="@dimen/imageView_size"
+            android:layout_height="@dimen/imageView_size"
+            android:src="@color/colorAccent" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="@dimen/imageView_size"
+            android:layout_height="@dimen/imageView_size"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@color/colorAccent" />
+
+        <ImageView
+            android:id="@+id/image3"
+            android:layout_width="@dimen/imageView_size"
+            android:layout_height="@dimen/imageView_size"
+            android:src="@color/colorAccent" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/slotContainer"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Start" />
+
+    <Button
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/start"
+        android:layout_centerHorizontal="true"
+        android:text="Stop" />
+
+</RelativeLayout>
