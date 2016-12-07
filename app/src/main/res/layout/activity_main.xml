@@ -21,7 +21,7 @@
             android:id="@+id/image1"
             android:layout_width="@dimen/imageView_size"
             android:layout_height="@dimen/imageView_size"
-            android:src="@color/colorAccent" />
+            android:src="@drawable/ic_android" />
 
         <ImageView
             android:id="@+id/image2"
@@ -29,13 +29,13 @@
             android:layout_height="@dimen/imageView_size"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:src="@color/colorAccent" />
+            android:src="@drawable/ic_android" />
 
         <ImageView
             android:id="@+id/image3"
             android:layout_width="@dimen/imageView_size"
             android:layout_height="@dimen/imageView_size"
-            android:src="@color/colorAccent" />
+            android:src="@drawable/ic_android" />
     </LinearLayout>
 
     <Button

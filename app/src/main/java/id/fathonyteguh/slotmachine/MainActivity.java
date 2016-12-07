@@ -2,6 +2,7 @@ package id.fathonyteguh.slotmachine;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.ic_flag, R.drawable.ic_hand,
             R.drawable.ic_pencil};
 
+    private final String[] TAG = {"android", "cake", "check", "cutter", "flag", "hand", "pencil"};
+
     private Thread firstThread;
     private Thread secondThread;
     private Thread thirdThread;
@@ -27,10 +30,14 @@ public class MainActivity extends AppCompatActivity {
     private RandomizerRunnable[] randomizerRunnables;
     private int currentRunnable;
 
+    private boolean isResuming;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        isResuming = false;
 
         randomizerRunnables = new RandomizerRunnable[3];
 
@@ -64,9 +71,25 @@ public class MainActivity extends AppCompatActivity {
         randomizerRunnables[1] = new RandomizerRunnable(image2);
         randomizerRunnables[2] = new RandomizerRunnable(image3);
 
-        randomizerRunnables[0].setCurrentIndex((int) (Math.random() * RESOURCE.length));
-        randomizerRunnables[1].setCurrentIndex((int) (Math.random() * RESOURCE.length));
-        randomizerRunnables[2].setCurrentIndex((int) (Math.random() * RESOURCE.length));
+        int image1Pos, image2Pos, image3Pos;
+
+        if(isResuming) {
+            image1Pos = getIndexOnTag(image1.getTag().toString());
+            image2Pos = getIndexOnTag(image2.getTag().toString());
+            image3Pos = getIndexOnTag(image3.getTag().toString());
+        } else {
+            image1Pos = (int) (Math.random() * RESOURCE.length);
+            image2Pos = (int) (Math.random() * RESOURCE.length);
+            image3Pos = (int) (Math.random() * RESOURCE.length);
+        }
+
+        randomizerRunnables[0].setCurrentIndex(image1Pos);
+        randomizerRunnables[1].setCurrentIndex(image2Pos);
+        randomizerRunnables[2].setCurrentIndex(image3Pos);
+
+        image1.setTag(TAG[image1Pos]);
+        image1.setTag(TAG[image2Pos]);
+        image1.setTag(TAG[image3Pos]);
 
         firstThread = new Thread(randomizerRunnables[0]);
         secondThread = new Thread(randomizerRunnables[1]);
@@ -84,13 +107,28 @@ public class MainActivity extends AppCompatActivity {
         stop.setEnabled(true);
     }
 
+    private int getIndexOnTag(String tag) {
+        int result = -1;
+        for(int i = 0; i < TAG.length; i++) {
+            if(TAG[i].equalsIgnoreCase(tag)) result = i;
+        }
+        return result;
+    }
+
     private void stopRoll() {
         if(currentRunnable < randomizerRunnables.length - 1) {
-            randomizerRunnables[currentRunnable++].setRunning(false);
-        } else {
             randomizerRunnables[currentRunnable].setRunning(false);
-            if(randomizerRunnables[0].getCurrentIndex() == randomizerRunnables[1].getCurrentIndex() &&
-                    randomizerRunnables[1].getCurrentIndex() == randomizerRunnables[2].getCurrentIndex()) {
+            currentRunnable++;
+        } else {
+            isResuming = true;
+
+            randomizerRunnables[currentRunnable].setRunning(false);
+
+            String image1Tag = image1.getTag().toString();
+            String image2Tag = image2.getTag().toString();
+            String image3Tag = image3.getTag().toString();
+
+            if(image1Tag.equalsIgnoreCase(image2Tag) && image2Tag.equalsIgnoreCase(image3Tag)) {
                 Toast.makeText(this, "You win!!!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "You lose. :(", Toast.LENGTH_SHORT).show();
@@ -133,9 +171,10 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             imageView.setImageResource(RESOURCE[currentIndex]);
+                            imageView.setTag(TAG[currentIndex]);
                         }
                     });
-                    Thread.sleep(50);
+                    Thread.sleep(150);
                     currentIndex++;
                     if (currentIndex >= RESOURCE.length) currentIndex = 0;
                 } catch (Exception e) {
